@@ -1,0 +1,4 @@
+data.zip
+.venv
+*.{csv,xlsx}
+*.pyc
