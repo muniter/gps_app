@@ -346,3 +346,39 @@ Se hizo necesario extraer el archivo y convertir cada hoja de cada archivo de cs
   "Estatus del App": 1
 }
 ```
+
+TODO: Which fields where selected
+
+## Plans
+
+The database needs to be organized so it can be queried accordingly.
+
+This 3 steps will better prepare the database for queries.
+
+1. Make vehicle_id an index
+2. Make datetime an index
+3. Sort the records table by datetime (Most of the time a query is from a time range)
+
+Ideas:
+
+1. Make a copy of the record table with a reduced amount of data (3 millions rows maybe?)
+2. Attempt the above operations over that
+
+Test:
+
+```sql
+CREATE TABLE record AS
+  SELECT * FROM record LIMIT 3000000;
+CREATE INDEX "record_vehicle_id" ON "record" ("vehicle_id");
+CREATE INDEX "record_datetime" ON "record" ("datetime");
+CLUSTER VERBOSE record USING record_datetime;
+```
+
+Real deal:
+
+```sql
+CREATE INDEX "record_vehicle_id" ON "record" ("vehicle_id");
+CREATE INDEX "record_datetime" ON "record" ("datetime");
+CREATE INDEX "idx_datetime_vehicle" ON "record" ("vehicle_id", "datetime");
+CLUSTER VERBOSE record USING record_datetime;
+```

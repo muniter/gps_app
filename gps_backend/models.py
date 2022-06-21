@@ -1,5 +1,5 @@
 from .database import Base
-from sqlalchemy import Column, String, Text, Integer, BigInteger, Float, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, String, Text, BigInteger, Float, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 
 
@@ -26,9 +26,9 @@ class Record(Base):
     longitude = Column(Float, nullable=False)
     altitude = Column(Float, nullable=True)
     speed = Column(Float, nullable=True)
-    datetime = Column(DateTime, nullable=False)
+    datetime = Column(DateTime, index=True, nullable=False)
     direction = Column(Float, nullable=True)
-    vehicle_id = Column(BigInteger, ForeignKey("vehicle.id"), nullable=False)
+    vehicle_id = Column(BigInteger, ForeignKey("vehicle.id"), index=True, nullable=False)
     vehicle = relationship("Vehicle")
     event = Column(Text, nullable=True)
     ignition = Column(Boolean, nullable=True)

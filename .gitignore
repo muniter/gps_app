@@ -2,3 +2,7 @@ data.zip
 .venv
 *.{csv,xlsx}
 *.pyc
+mount
+azure-cli-env
+test.sql
+.env
