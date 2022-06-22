@@ -4,5 +4,4 @@ data.zip
 *.pyc
 mount
 azure-cli-env
-test.sql
 .env

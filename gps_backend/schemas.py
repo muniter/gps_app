@@ -18,12 +18,15 @@ class RecordSchema(Schema):
     battery = fields.Float()
     backup_battery = fields.Float()
 
+class LastRecordSchema(RecordSchema):
+    vehicle_name = fields.String()
+
 class RecordQuerySchema(Schema):
     vehicle_id = fields.Integer()
     start = fields.DateTime()
     end = fields.DateTime()
 
-
 vehicle_schema = VehicleSchema()
 record_schema = RecordSchema()
+last_record_schema = LastRecordSchema()
 record_query_schema = RecordQuerySchema()
