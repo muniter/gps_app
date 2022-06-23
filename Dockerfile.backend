@@ -1,0 +1,15 @@
+FROM python:3.10-alpine
+
+WORKDIR /usr/src/app
+EXPOSE 5000
+
+# Needed for postgres client to work
+RUN apk update \
+    && apk add libpq postgresql-dev \
+    && apk add build-base
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY gps_backend ./gps_backend
+
+CMD exec gunicorn --bind :${PORT=5000} --workers 1 --threads 8 --timeout 0 gps_backend:app
