@@ -1,5 +1,5 @@
-POSTGRES_HOST="the url to the database"
-POSTGRES_PASSWORD='the password to the database'
-POSTGRES_USER="the user to the database"
-POSTGRES_PORT="the port to the database"
-POSTGRES_DB="the name of the database"
+POSTGRES_HOST=the url to the database
+POSTGRES_PASSWORD=the password to the database
+POSTGRES_USER=the user to the database
+POSTGRES_PORT=the port to the database
+POSTGRES_DB=the name of the database
