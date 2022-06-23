@@ -6,4 +6,3 @@ from . import database
 session = database.Session()
 
 from . import api
-
