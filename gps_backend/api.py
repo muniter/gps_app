@@ -12,6 +12,15 @@ def _get_vehicles(name: str|None = None):
     else:
         return typing.cast(list[Vehicle], session.execute(select(Vehicle)).scalars().all())
 
+@app.route('/', methods=['GET'])
+def alive():
+    # Test if the database is alive
+    try:
+        session.execute(select(Vehicle).limit(1))
+        return "OK"
+    except Exception as e:
+        return str(e)
+
 @app.route('/vehicle', methods=['GET'])
 def get_vehicles():
     """
