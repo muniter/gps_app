@@ -15,31 +15,6 @@ class Vehicle(Base):
     id = Column(BigInteger, primary_key=True)
     name = Column(String(100), nullable=False)
 
-
-
-class _record():
-    """
-    Stores the record information.
-    """
-    def __repr__(self):
-        return "<Record(id={}, vehicle_id={}, datetime={})>".format(
-            self.id, self.vehicle_id, self.datetime
-        )
-
-    id = Column(BigInteger, primary_key=True, autoincrement=True)
-    latitude = Column(Float, nullable=False)
-    longitude = Column(Float, nullable=False)
-    altitude = Column(Float, nullable=True)
-    speed = Column(Float, nullable=True)
-    datetime = Column(DateTime, index=True, nullable=False)
-    direction = Column(Float, nullable=True)
-    vehicle_id = Column(BigInteger, ForeignKey("vehicle.id"), index=True, nullable=False)
-    vehicle = relationship("Vehicle")
-    event = Column(Text, nullable=True)
-    ignition = Column(Boolean, nullable=True)
-    battery = Column(Float, nullable=True)
-    backup_battery = Column(Float, nullable=True)
-
 class Record(Base):
     """
     Stores the record information.
