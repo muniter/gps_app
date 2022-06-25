@@ -22,7 +22,7 @@ class LastRecordSchema(RecordSchema):
     vehicle_name = fields.String()
 
 class RecordQuerySchema(Schema):
-    vehicle_id = fields.Integer()
+    vehicle_name = fields.String()
     start = fields.DateTime()
     end = fields.DateTime()
 
