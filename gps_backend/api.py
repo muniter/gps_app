@@ -46,17 +46,14 @@ def get_record(name, start, end):
     """
     Get records for a vehicle between two dates.
     """
-    vehicle = _get_vehicles(name)
-    if not vehicle or not isinstance(vehicle, Vehicle):
-        return 'Vehicle not found', 404
-
     try:
-        query = record_query_schema.load({'vehicle_id': vehicle.id, 'start': start, 'end': end})
+        query = typing.cast(dict, record_query_schema.load({'vehicle_name': name, 'start': start, 'end': end}))
+        # SELECT * FROM record WHERE vehicle_id = (SELECT id FROM vehicle WHERE name = 'WEJ996' LIMIT 1) AND datetime >= '2021-04-12' AND datetime <= '2021-06-13';
+        records = session.execute(select(Record).where(Record.vehicle_id == select(Vehicle.id).where(Vehicle.name == query['vehicle_name']).limit(1)).where(Record.datetime >= query['start']).where(Record.datetime <= query['end'])).scalars().all()
+        return record_schema.dumps(records, many=True)
     except ValidationError as e:
-        return str(e), 400
+        return str(e.messages), 400
 
-    records = session.execute(select(Record).where(Record.vehicle_id == query['vehicle_id']).where(Record.datetime >= query['start']).where(Record.datetime <= query['end'])).scalars().all()
-    return record_schema.dumps(records, many=True)
 
 @app.route('/last_record', methods=['GET'])
 def get_last_records():
