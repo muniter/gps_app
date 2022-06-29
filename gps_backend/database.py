@@ -7,6 +7,7 @@ from os import environ
 
 DB_URL = "sqlite:///./app.db"
 engine = None
+legacy_engine = None
 
 env = utils.dotenv_load() or environ
 production = environ.get('ENV') == 'production'
@@ -17,6 +18,7 @@ if env.get("POSTGRES_USER") and env.get("POSTGRES_PASSWORD"):
     dbname = env.get("POSTGRES_DB")
     DB_URL = f"postgresql://{user}:{password}@{host}/{dbname}"
     engine = create_engine(DB_URL, echo=(not production), future=True)
+    legacy_engine = create_engine(DB_URL, echo=(not production), future=False)
 else:
     print("Using sqlite database")
     engine = create_engine(DB_URL, connect_args={"check_same_thread": True})
