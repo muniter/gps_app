@@ -1,12 +1,10 @@
-FROM python:3.10-alpine
+FROM python:3.10-slim-bullseye
 
 WORKDIR /usr/src/app
 EXPOSE 5000
 
 # Needed for postgres client to work
-RUN apk update \
-    && apk add libpq postgresql-dev \
-    && apk add build-base
+RUN apt-get update && apt install -y libpq-dev postgresql-client-common build-essential
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
