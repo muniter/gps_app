@@ -3,17 +3,15 @@ import plotly.graph_objects as go
 import pandas as pd
 from dash import html
 import dash_bootstrap_components as dbc
-from dash.development.base_component import Component
 import numpy as np
 
 
-def map_figure(data: pd.DataFrame, vehicle_name: str = "") -> go.Figure:
+def map_figure(data: pd.DataFrame):
     fig = go.Figure(
         data=go.Scattermapbox(
             lon=data.longitude,
             lat=data.latitude,
-            mode="markers",
-            text=vehicle_name or data.vehicle_name,
+            mode="markers+lines",
         )
     )
 
@@ -21,16 +19,39 @@ def map_figure(data: pd.DataFrame, vehicle_name: str = "") -> go.Figure:
     fig.update_layout(
         hovermode="closest",
         mapbox_style="open-street-map",
-        mapbox=dict(
-            center=center,
-            bearing=0,
-            pitch=0,
-            zoom=zoom
-        ),
+        mapbox=dict(center=center, bearing=0, pitch=0, zoom=zoom),
         margin=dict(l=0, r=0, t=0, b=0),
     )
 
     return fig
+
+
+def speed_map_figure(data: pd.DataFrame):
+    fig = px.density_mapbox(
+        data,
+        lon=data.longitude,
+        lat=data.latitude,
+        z="speed",
+    )
+
+    zoom, center = zoom_center(lons=data.longitude, lats=data.latitude)
+    fig.update_layout(
+        hovermode="closest",
+        mapbox_style="open-street-map",
+        mapbox=dict(center=center, bearing=0, pitch=0, zoom=zoom),
+        margin=dict(l=0, r=0, t=0, b=0),
+    )
+
+    return fig
+
+def distance_traveled_figure(data: pd.DataFrame):
+    fig = px.line(
+        x=data.datetime,
+        y=data.cum_distance,
+        labels={"x": "Date", "y": "Distance (km)"},
+    )
+    return fig
+
 
 
 def new_toast(message: str):
@@ -52,13 +73,12 @@ def new_toast(message: str):
 
 
 def zoom_center(
-    lons: tuple|None = None,
-    lats: tuple|None = None,
-    lonlats: tuple|None = None,
-    format: str = "lonlat",
+    lons: tuple | None = None,
+    lats: tuple | None = None,
+    lonlats: tuple | None = None,
     projection: str = "mercator",
     width_to_height: float = 2.0,
-) -> (float, dict):
+) -> tuple[float, dict]:
     """Finds optimal zoom and centering for a plotly mapbox.
     Must be passed (lons & lats) or lonlats.
     Temporary solution awaiting official implementation, see:

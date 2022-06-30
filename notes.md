@@ -382,3 +382,11 @@ CREATE INDEX "record_datetime" ON "record" ("datetime");
 CREATE INDEX "idx_datetime_vehicle" ON "record" ("vehicle_id", "datetime");
 CLUSTER VERBOSE record USING record_datetime;
 ```
+
+## Interfaz
+
+Primeramente un mapa donde estén todos los últimos puntos de un vehículo.
+
+Se pide escoger una placa de vehículo empezando con el valor por defecto "all"
+
+Una vez se escoge una placa se expone el dropdown de la fecha.
